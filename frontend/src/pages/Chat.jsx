@@ -131,6 +131,11 @@ export default function Chat() {
       },
     ]);
 
+    // Save search to history
+    const searchHistory = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+    searchHistory.push({ query: userMessage, timestamp: new Date().toISOString() });
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
     setLoading(true);
     setCurrentSteps([]);
     let aiResponse = "";

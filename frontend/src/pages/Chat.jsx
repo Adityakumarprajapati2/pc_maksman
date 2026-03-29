@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { sendChatMessage, checkHealth } from "../services/chatApi";
 import { useAppContext } from "../context/AppContext";
+import ReactMarkdown from "react-markdown";
 
 function MessageBubble({ message, isUser, status, steps }) {
   return (
@@ -13,7 +14,25 @@ function MessageBubble({ message, isUser, status, steps }) {
             : "glass-card text-white rounded-bl-none"
         }`}
       >
-        <p className="text-sm leading-relaxed">{message}</p>
+        {isUser ? (
+          <p className="text-sm leading-relaxed">{message}</p>
+        ) : (
+          <ReactMarkdown 
+            className="text-sm leading-relaxed markdown-content"
+            components={{
+              h2: ({node, ...props}) => <h2 className="text-lg font-bold mt-4 mb-2 text-primary-glow" {...props} />,
+              h3: ({node, ...props}) => <h3 className="text-base font-semibold mt-3 mb-1 text-slate-200" {...props} />,
+              p: ({node, ...props}) => <p className="mb-3 leading-relaxed" {...props} />,
+              ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-1" {...props} />,
+              ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-1" {...props} />,
+              li: ({node, ...props}) => <li className="text-sm" {...props} />,
+              strong: ({node, ...props}) => <strong className="font-semibold text-primary-glow" {...props} />,
+              code: ({node, ...props}) => <code className="bg-slate-700 px-1 py-0.5 rounded text-xs" {...props} />,
+            }}
+          >
+            {message}
+          </ReactMarkdown>
+        )}
         {!isUser && steps && steps.length > 0 && (
           <div className="mt-3 text-xs text-slate-300 border-t border-white/10 pt-2">
             <div className="font-semibold mb-2 text-slate-200">Agent Flow:</div>

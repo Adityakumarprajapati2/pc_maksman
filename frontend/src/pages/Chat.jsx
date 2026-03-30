@@ -62,7 +62,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm your PC Builder AI Assistant. Ask me anything about building a PC, comparing components, or optimizing your setup.",
+      text: "Hello! I'm your PC Marksman AI Assistant. Ask me anything about building a PC, comparing components, or optimizing your setup.",
       isUser: false,
     },
   ]);
@@ -245,7 +245,7 @@ export default function Chat() {
       {/* Server status header */}
       <div className="glass-panel p-4 rounded-lg flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">PC Builder AI Chat</h2>
+          <h2 className="text-2xl font-bold text-white">PC Marksman AI Chat</h2>
           <p className="text-sm text-slate-400 mt-1">
             Ask questions about PC components, builds, and compatibility
           </p>

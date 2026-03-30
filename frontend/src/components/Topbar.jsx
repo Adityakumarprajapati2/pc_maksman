@@ -13,7 +13,7 @@ export default function Topbar() {
               Optimized for Productivity
             </span>
           </div>
-          <h2 className="text-white text-3xl md:text-4xl font-bold leading-tight tracking-tight">PC Builder - A Stack for Your Own PC</h2>
+          <h2 className="text-white text-3xl md:text-4xl font-bold leading-tight tracking-tight">PC Marksman - A Stack for Your Own PC</h2>
           <p className="text-slate-400 text-sm mt-1 max-w-xl">Select a base profile below to customize your build.</p>
         </div>
 

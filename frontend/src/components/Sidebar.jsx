@@ -97,7 +97,7 @@ export default function Sidebar() {
           <div className="flex gap-3 items-center pb-4 border-b border-white/10">
             <div className="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/40 shadow-[0_0_15px_rgba(19,135,236,0.3)]" />
             <div className="hidden lg:flex flex-col">
-              <h1 className="text-white text-base font-bold leading-normal tracking-wide">PC Builder </h1>
+              <h1 className="text-white text-base font-bold leading-normal tracking-wide">PC Marksman </h1>
               <p className="text-slate-400 text-xs">Configurator v3.0</p>
             </div>
           </div>

@@ -58,7 +58,7 @@ function MessageBubble({ message, isUser, status, steps }) {
 }
 
 export default function Chat() {
-  const { setLastResponse } = useAppContext();
+  const { setLastResponse, setSuggestedParts } = useAppContext();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -101,6 +101,55 @@ export default function Chat() {
       setServerHealth("offline");
       console.error("[ERROR] Server offline:", error.message);
     }
+  };
+
+  // Extract part names from AI response and match with component library
+  const extractSuggestedParts = (aiResponse) => {
+    // List of all known components that can be suggested
+    const allComponents = [
+      // GPUs
+      "RTX 4090", "RTX 4080", "RTX 4070 Ti", "RTX 4070", "RTX 4060 Ti", "RTX 4060", "RTX 3090 Ti", "RTX 2080 Ti", "RTX 6000 Ada", "RTX 4080 Super", "RTX 4070 Super",
+      "RX 7900 XTX", "RX 7900 XT", "RX 7800 XT", "RX 7700 XT", "RX 6900 XT", "RX 7600",
+      "Arc A770", "Arc A750",
+      // CPUs
+      "Core i9-14900KS", "Core i9-14900K", "Core i9-13900K", "Core i7-14700K", "Core i5-14600K", "Core i5-13600K", "Core i9-12900K", "Core Ultra 9 285K",
+      "Ryzen 9 7950X3D", "Ryzen 9 7950X", "Ryzen 9 7900X3D", "Ryzen 9 7900X", "Ryzen 7 7700X", "Ryzen 5 7600X", "Ryzen 7 5800X3D", "Ryzen 5 5600X", "Ryzen 7 5700X3D", "Ryzen 7 9700X",
+      "Threadripper 5995WX", "Xeon W9-3495X",
+      // RAM
+      "Kingston Fury Beast Pro", "Corsair Dominator Platinum", "G.Skill Trident Z5", "Crucial Pro", "Kingston FURY Beast", "HyperX Predator", "ADATA XPG Lian",
+      // SSDs
+      "Samsung 990 Pro", "WD Black SN850X", "WD Black SN840", "Crucial P5 Plus", "Crucial P5", "SK Hynix Platinum", "Kingston KC3000", "Sabrent Rocket 4", "Corsair MP600", "Gigabyte AORUS", "Samsung 980 Pro", "Samsung 870 QVO", "Intel 670p", "Seagate FireCuda 530", "ADATA Gammix",
+      // PSUs
+      "Seasonic Prime Platinum", "Corsair RM850x", "EVGA SuperNOVA 1600T2", "Thermaltake Toughpower GF1", "Seasonic Focus GX", "MSI MAG A850GL", "Corsair AX1200", "NZXT C850", "Gigabyte P850GM", "Superflower Leadex Platinum",
+      // Cooling
+      "NZXT Kraken Z93", "Corsair iCUE H150i Elite", "Noctua NH-D15", "be quiet! Dark Rock Pro 4", "Lian Li Galahad 240", "Arctic Liquid Freezer", "Corsair ML120 Pro", "EK AIO 360", "Thermalright Peerless Assassin",
+      // Motherboards
+      "ROG Strix X870-E", "MPG B850 Edge", "Z790 Master", "ProArt X870-E", "MPG Z890 Master", "TUF Gaming X870-E", "B850 Elite", "MPG Z890 Carbon", "ROG STRIX B850", "X870E Elite", "X870E Taichi", "N7 B550",
+      // Monitors
+      "UltraSharp U2723DE", "ROG Swift PG279QM", "LG UltraWide 34", "MOBIUZ EW2880U", "MAG 321CURV", "LG 27UP550", "PA278CV", "S2722DGM", "ProArt PA348C", "LG 32UP550",
+      // Cases
+      "Corsair 5000T", "NZXT H7 Flow", "Lian Li Lancool 216", "Fractal Design Torrent", "HAF 700 EVO", "BeQuiet Dark Base 901", "Silverstone Primera PM01", "Phanteks Evolv X", "ThermalTake Core P5", "Jonsbo U4 Plus",
+      // Mice
+      "DeathAdder V3", "Rival 650", "G Pro X", "ROG Chakram", "M65 Elite", "Finalmouse Starlight Pro", "ZOWIE EC2", "Glorious Model O",
+      // Keyboards
+      "K95 Platinum XT", "K100 RGB", "BlackWidow V4", "Apex Pro", "Ducky One 3", "ROG Strix Scope", "Keychron K8 Pro", "Drop CTRL", "Leopold FC900R",
+      // Headsets
+      "Cloud II", "Arctis Pro", "VOID Elite", "ROG Delta", "Arctis 7", "BlackShark V2", "SCUF H6", "Beyerdynamic GAME ONE"
+    ];
+
+    const suggestedParts = [];
+    
+    // Search for component names in the AI response
+    allComponents.forEach((component) => {
+      if (aiResponse.toLowerCase().includes(component.toLowerCase())) {
+        // Avoid duplicates
+        if (!suggestedParts.find(p => p.toLowerCase() === component.toLowerCase())) {
+          suggestedParts.push(component);
+        }
+      }
+    });
+
+    return suggestedParts;
   };
 
   const handleSendMessage = async (e) => {
@@ -201,15 +250,32 @@ export default function Chat() {
       }
 
       if (aiResponse) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: Date.now(),
-            text: aiResponse,
-            isUser: false,
-            steps: steps,
-          },
-        ]);
+        // Extract suggested parts from AI response
+        const suggested = extractSuggestedParts(aiResponse);
+        if (suggested.length > 0) {
+          setSuggestedParts(suggested);
+          // Add notification about suggested parts being available in Configurator
+          const notificationResponse = aiResponse + `\n\n✨ **AI Suggested Parts (${suggested.length}):** ${suggested.join(", ")}\n📌 *These parts are now highlighted in the Configurator page!*`;
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              text: notificationResponse,
+              isUser: false,
+              steps: steps,
+            },
+          ]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              text: aiResponse,
+              isUser: false,
+              steps: steps,
+            },
+          ]);
+        }
         // Save last response to context for sidebar
         setLastResponse(aiResponse);
       }

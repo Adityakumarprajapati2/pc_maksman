@@ -32,6 +32,7 @@ export const AppProvider = ({ children }) => {
     const [useCaseBuilds, setUseCaseBuilds] = useState(null); // Stores the 3 profile builds
     const [isTyping, setIsTyping] = useState(false);
     const [lastResponse, setLastResponse] = useState(null); // Stores the last AI response
+    const [suggestedParts, setSuggestedParts] = useState([]); // Stores AI-suggested parts for configurator
 
     // Helper to add a user message
     const addUserMessage = (content) => {
@@ -63,7 +64,9 @@ export const AppProvider = ({ children }) => {
                 isTyping,
                 setIsTyping,
                 lastResponse,
-                setLastResponse
+                setLastResponse,
+                suggestedParts,
+                setSuggestedParts
             }}
         >
             {children}

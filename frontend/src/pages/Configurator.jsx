@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 
 export default function Configurator() {
-  const { addBotMessage } = useAppContext();
+  const { addBotMessage, suggestedParts } = useAppContext();
   const [selectedCard, setSelectedCard] = useState(null);
   const [savedRecommendations, setSavedRecommendations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("price-low");
+  const [showAISuggested, setShowAISuggested] = useState(false);
 
   // Load saved recommendations from localStorage on mount
   useEffect(() => {
@@ -193,11 +194,17 @@ export default function Configurator() {
 
   // Filter and sort recommendations based on search and sort preference
   const filteredRecommendations = aiRecommendations
-    .filter(item => 
-      searchQuery === "" || 
-      item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    .filter(item => {
+      // First filter: search query
+      const matchesSearch = searchQuery === "" || 
+        item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      // Second filter: AI suggested parts (if toggle is on)
+      const matchesAISuggested = !showAISuggested || isAISuggested(item.name);
+      
+      return matchesSearch && matchesAISuggested;
+    })
     .sort((a, b) => {
       if (sortBy === "price-low") return a.price - b.price;
       if (sortBy === "price-high") return b.price - a.price;
@@ -230,6 +237,15 @@ export default function Configurator() {
       addBotMessage(`"${card.name}" is already in your recommendations.`, "INFO");
     }
     closeModal();
+  };
+
+  // Check if a component name matches any AI-suggested parts
+  const isAISuggested = (componentName) => {
+    if (!suggestedParts || suggestedParts.length === 0) return false;
+    return suggestedParts.some(part => 
+      componentName.toLowerCase().includes(part.toLowerCase()) ||
+      part.toLowerCase().includes(componentName.toLowerCase())
+    );
   };
 
   return (
@@ -273,6 +289,23 @@ export default function Configurator() {
               <option value="performance">Performance: Best First ⭐</option>
             </select>
           </div>
+
+          {/* AI Suggested Parts Button */}
+          {suggestedParts && suggestedParts.length > 0 && (
+            <div className="md:col-span-2">
+              <button
+                onClick={() => setShowAISuggested(!showAISuggested)}
+                className={`w-full px-4 py-3 rounded-lg font-bold transition flex items-center justify-center gap-2 ${
+                  showAISuggested
+                    ? "bg-primary text-white border border-primary"
+                    : "bg-slate-800/50 border border-primary/30 text-primary hover:bg-slate-700/50"
+                }`}
+              >
+                <span className="material-symbols-outlined">sparkles</span>
+                {showAISuggested ? `✨ Showing ${suggestedParts.length} AI Suggested Parts` : `✨ View ${suggestedParts.length} AI Suggested Parts from Chat`}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Category Quick Filters */}
@@ -316,12 +349,19 @@ export default function Configurator() {
               onClick={() => openModal(card)}
               className={`glass-card rounded-lg p-3 cursor-pointer transform transition hover:scale-105 ${
                 card.recommended ? "ring-2 ring-primary/50" : ""
-              } group overflow-hidden`}
+              } ${isAISuggested(card.name) ? "ring-2 ring-yellow-400/50" : ""} group overflow-hidden`}
             >
               <div className="h-full flex flex-col bg-slate-900/40 rounded-lg p-4 border border-white/5 hover:border-primary/30">
                 {card.recommended && (
                   <div className="absolute top-1 right-1 bg-primary text-white text-[8px] px-2 py-0.5 rounded">
                     AI ⭐
+                  </div>
+                )}
+                
+                {isAISuggested(card.name) && (
+                  <div className="absolute top-1 left-1 bg-yellow-500 text-white text-[8px] px-2 py-0.5 rounded flex items-center gap-1">
+                    <span>✨</span>
+                    <span>Chat Suggested</span>
                   </div>
                 )}
 

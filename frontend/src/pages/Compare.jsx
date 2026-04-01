@@ -169,8 +169,8 @@ export default function Compare() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
         {filteredBuilds.length > 0 ? (
           filteredBuilds.map((build, idx) => {
-          const isSelected = build.name.toLowerCase() === selectedProfile;
-          const icons = ["desktop_windows", "computer", "precision_manufacturing"];
+            const isSelected = build.name.toLowerCase() === selectedProfile;
+            const icons = ["desktop_windows", "computer", "precision_manufacturing"];
 
           return (
             <div

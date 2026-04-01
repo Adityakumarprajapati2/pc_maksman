@@ -130,15 +130,21 @@ const useCaseNode = async (state) => {
 };
 
 const composeUseCaseNode = async (state) => {
-    if (state.finalResponse) {
-        return {
-            conversationHistory: state.conversationHistory,
-            recentQuestions: state.recentQuestions
-        };
+    // Always try to compose a response, even if builds failed
+    if (!state.builds || state.builds.length === 0) {
+        // If no builds, return what we have or generate a fallback
+        if (state.finalResponse) {
+            return {
+                conversationHistory: state.conversationHistory,
+                recentQuestions: state.recentQuestions
+            };
+        }
+        // No builds and no response - compose from scratch
     }
+    
     const composed = await composeResponse({
         userMessage: state.input,
-        suggestions: state.builds,
+        suggestions: state.builds || [],
         fixedParts: {},
         budget: null,
         recentQuestions: state.recentQuestions || []

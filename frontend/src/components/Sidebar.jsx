@@ -108,7 +108,7 @@ export default function Sidebar() {
               <p className="hidden lg:block text-sm font-medium">Configure</p>
             </Link>
 
-            <Link to="/comparison" className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${isActive("/comparison") ? "bg-primary/20 text-primary border border-primary/30" : "text-slate-300 hover:bg-white/10 hover:text-white"}`}>
+            <Link to="/compare" className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all ${isActive("/compare") ? "bg-primary/20 text-primary border border-primary/30" : "text-slate-300 hover:bg-white/10 hover:text-white"}`}>
               <span className="material-symbols-outlined text-[24px]">compare</span>
               <p className="hidden lg:block text-sm font-medium">Compare</p>
             </Link>

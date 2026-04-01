@@ -51,7 +51,7 @@ const corsOptions = {
 
 // ── Middleware ────────────────────────────────────────────────
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
 // ── Request logging ──────────────────────────────────────────
 app.use((req, res, next) => {
@@ -162,8 +162,12 @@ let { message, sessionId = "default" } = body;
         );
 
         let finalResponse = null;
+        let nodeCount = 0;
 
         for await (const chunk of stream) {
+            nodeCount++;
+            console.log(`[STREAM] Chunk ${nodeCount}:`, Object.keys(chunk));
+            
             // chunk keys refer to nodes executed, and map to their explicit returned state objects.
             const nodeName = Object.keys(chunk)[0];
             const metadata = agentMetadata[nodeName] || { agentName: nodeName, description: "Processing..." };
@@ -178,6 +182,7 @@ let { message, sessionId = "default" } = body;
             // Capture final response from terminal nodes
             if (nodeName === "composeUseCaseNode" || nodeName === "composerNode" || nodeName === "safetyNode" || nodeName === "generalInfoNode") {
                 const finalState = chunk[nodeName];
+                console.log(`[FINAL NODE] ${nodeName}:`, finalState?.finalResponse ? "Has response" : "No response");
                 
                 if (finalState.finalResponse) {
                     finalResponse = finalState.finalResponse;
@@ -225,6 +230,7 @@ let { message, sessionId = "default" } = body;
 
     } catch (error) {
         console.error("Chat streaming endpoint error:", error);
+        console.error("[STACK]", error.stack);
         const errorResponse = {
             type: "ERROR",
             response: "Sorry, I encountered an error while processing your request. Please try again."

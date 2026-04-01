@@ -261,6 +261,44 @@ export default function Configurator() {
         </p>
       </div>
 
+      {/* AI Chat Suggested Parts Banner - Top Priority */}
+      {suggestedParts && suggestedParts.length > 0 && (
+        <div className={`rounded-2xl p-6 mb-8 border-2 ${showAISuggested ? "bg-yellow-500/10 border-yellow-400/50" : "bg-gradient-to-r from-yellow-500/5 to-orange-500/5 border-yellow-400/30"}`}>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">✨</span>
+                <h3 className="text-lg font-bold text-white">AI Chat Suggestions</h3>
+                <span className="bg-yellow-500 text-slate-900 text-xs font-bold px-2 py-1 rounded-full">{suggestedParts.length} Parts</span>
+              </div>
+              <p className="text-slate-300 text-sm mb-3">
+                Parts suggested from your AI Chat conversation:
+              </p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {suggestedParts.map((part, idx) => (
+                  <div key={idx} className="bg-yellow-400/20 border border-yellow-400/50 text-yellow-100 text-xs font-bold px-3 py-1 rounded-full">
+                    {part}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              onClick={() => setShowAISuggested(!showAISuggested)}
+              className={`px-4 py-2 rounded-lg font-bold transition whitespace-nowrap flex items-center gap-2 ${
+                showAISuggested
+                  ? "bg-yellow-500 text-slate-900 hover:bg-yellow-600"
+                  : "bg-slate-800/50 border border-yellow-400/30 text-yellow-300 hover:bg-slate-700/50"
+              }`}
+            >
+              <span className="material-symbols-outlined text-sm">
+                {showAISuggested ? "visibility" : "visibility_off"}
+              </span>
+              {showAISuggested ? "Hide" : "Show"} Only
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Search and Filter Section */}
       <div className="glass-panel rounded-2xl p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -290,26 +328,8 @@ export default function Configurator() {
             </select>
           </div>
 
-          {/* AI Suggested Parts Button */}
-          {suggestedParts && suggestedParts.length > 0 && (
-            <div className="md:col-span-2">
-              <button
-                onClick={() => setShowAISuggested(!showAISuggested)}
-                className={`w-full px-4 py-3 rounded-lg font-bold transition flex items-center justify-center gap-2 ${
-                  showAISuggested
-                    ? "bg-primary text-white border border-primary"
-                    : "bg-slate-800/50 border border-primary/30 text-primary hover:bg-slate-700/50"
-                }`}
-              >
-                <span className="material-symbols-outlined">sparkles</span>
-                {showAISuggested ? `✨ Showing ${suggestedParts.length} AI Suggested Parts` : `✨ View ${suggestedParts.length} AI Suggested Parts from Chat`}
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Category Quick Filters */}
-        <div className="mt-4">
+          {/* Category Quick Filters */}
+          <div className="mt-4">
           <p className="text-xs text-slate-400 mb-2 uppercase font-bold">Quick Categories:</p>
           <div className="flex flex-wrap gap-2">
             <button

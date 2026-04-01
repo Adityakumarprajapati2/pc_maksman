@@ -274,7 +274,7 @@ export default function Settings() {
                     <div key={index} className="bg-slate-800 rounded-lg p-4 border border-slate-700">
                       <p className="text-white font-semibold">{part.name}</p>
                       <p className="text-slate-400 text-sm">{part.category}</p>
-                      <p className="text-primary font-bold mt-2">${part.price}</p>
+                      <p className="text-primary font-bold mt-2">₹{part.price.toLocaleString("en-IN")}</p>
                     </div>
                   ))}
                 </div>

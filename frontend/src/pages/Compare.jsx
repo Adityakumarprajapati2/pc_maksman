@@ -58,7 +58,20 @@ export default function Compare() {
   useEffect(() => {
     const filtered = builds.filter(b => b.totalPrice <= maxPrice);
     setFilteredBuilds(filtered);
-  }, [builds, maxPrice]);
+    
+    // Auto-select the best matching profile within budget
+    if (filtered.length > 0) {
+      // Try to keep current selection if it's still available
+      const isCurrentAvailable = filtered.some(b => b.name.toLowerCase() === selectedProfile);
+      if (!isCurrentAvailable) {
+        // Otherwise, select the highest-tier build within budget
+        const bestBuild = filtered.reduce((best, current) => 
+          current.totalPrice > best.totalPrice ? current : best
+        );
+        setSelectedProfile(bestBuild.name.toLowerCase());
+      }
+    }
+  }, [builds, maxPrice, selectedProfile]);
 
   const handleSelectProfile = (profileName) => {
     setSelectedProfile(profileName.toLowerCase());
@@ -78,7 +91,9 @@ export default function Compare() {
     }
   };
 
-  const selectedBuildData = builds.find(b => b.name.toLowerCase() === selectedProfile);
+  // Get selected build from filtered builds, fallback to all builds
+  const selectedBuildData = filteredBuilds.find(b => b.name.toLowerCase() === selectedProfile) || 
+                           builds.find(b => b.name.toLowerCase() === selectedProfile);
 
   return (
     <div className="space-y-8">

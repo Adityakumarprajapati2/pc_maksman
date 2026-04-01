@@ -6,6 +6,8 @@ export default function Configurator() {
   const { addBotMessage } = useAppContext();
   const [selectedCard, setSelectedCard] = useState(null);
   const [savedRecommendations, setSavedRecommendations] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("price-low");
 
   // Load saved recommendations from localStorage on mount
   useEffect(() => {
@@ -290,8 +292,211 @@ export default function Configurator() {
       description: "Top-tier liquid cooling solution for extreme performance and cool temperatures.",
       recommended: true,
       icon: "ac_unit"
+    },
+    {
+      id: 23,
+      name: "ASUS ROG Strix X870-E",
+      category: "Motherboard",
+      price: 45000,
+      specs: "ATX, PCIe 5.0, WiFi 7",
+      performance: "96/100",
+      powerUsage: "N/A",
+      useCase: "High-end Gaming, Streaming",
+      description: "Premium X870-E motherboard with PCIe 5.0 support for cutting-edge performance.",
+      recommended: true,
+      icon: "memory"
+    },
+    {
+      id: 24,
+      name: "MSI MPG B850 Edge WiFi",
+      category: "Motherboard",
+      price: 28000,
+      specs: "ATX, PCIe 5.0, WiFi 6E",
+      performance: "94/100",
+      powerUsage: "N/A",
+      useCase: "Gaming, Content Creation",
+      description: "Great mid-range motherboard with excellent VRM and connectivity.",
+      icon: "memory"
+    },
+    {
+      id: 25,
+      name: "Gigabyte Z790 Master",
+      category: "Motherboard",
+      price: 32000,
+      specs: "ATX, PCIe 5.0, WiFi 6E",
+      performance: "95/100",
+      powerUsage: "N/A",
+      useCase: "Intel Gaming Build",
+      description: "Premium Intel platform with top-tier power delivery and features.",
+      icon: "memory"
+    },
+    {
+      id: 26,
+      name: "Dell UltraSharp U2723DE",
+      category: "Monitor",
+      price: 35000,
+      specs: "27\" 1440p, USB-C, 90W",
+      performance: "94/100",
+      powerUsage: "65W",
+      useCase: "Professional Work, Gaming",
+      description: "Premium monitor with USB-C connectivity and excellent color accuracy.",
+      recommended: true,
+      icon: "monitor"
+    },
+    {
+      id: 27,
+      name: "ASUS ROG Swift PG279QM",
+      category: "Monitor",
+      price: 42000,
+      specs: "27\" 1440p, 240Hz, IPS",
+      performance: "97/100",
+      powerUsage: "80W",
+      useCase: "Competitive Gaming",
+      description: "High-refresh 1440p gaming monitor with exceptional visual quality.",
+      icon: "monitor"
+    },
+    {
+      id: 28,
+      name: "LG UltraWide 34\"",
+      category: "Monitor",
+      price: 38000,
+      specs: "34\" 3440x1440, 160Hz",
+      performance: "96/100",
+      powerUsage: "70W",
+      useCase: "Gaming, Productivity",
+      description: "Immersive ultrawide gaming and productivity monitor.",
+      icon: "monitor"
+    },
+    {
+      id: 29,
+      name: "Corsair 5000T RGB",
+      category: "Case",
+      price: 18000,
+      specs: "Full Tower, Tempered Glass",
+      performance: "92/100",
+      powerUsage: "N/A",
+      useCase: "High-end Gaming Build",
+      description: "Premium full-tower case with excellent airflow and RGB lighting.",
+      recommended: true,
+      icon: "folder"
+    },
+    {
+      id: 30,
+      name: "NZXT H7 Flow",
+      category: "Case",
+      price: 12000,
+      specs: "Mid Tower, 3x 120mm Fans",
+      performance: "88/100",
+      powerUsage: "N/A",
+      useCase: "Mid-range Gaming",
+      description: "Affordable mid-tower with good thermals and clean cable management.",
+      icon: "folder"
+    },
+    {
+      id: 31,
+      name: "Lian Li Lancool 216",
+      category: "Case",
+      price: 8000,
+      specs: "Mid Tower, Mesh Front",
+      performance: "86/100",
+      powerUsage: "N/A",
+      useCase: "Budget Build",
+      description: "Budget-friendly case with excellent airflow and build quality.",
+      icon: "folder"
+    },
+    {
+      id: 32,
+      name: "Razer DeathAdder V3",
+      category: "Mouse",
+      price: 6500,
+      specs: "Wireless, 30000 DPI, 59g",
+      performance: "95/100",
+      powerUsage: "2W",
+      useCase: "Gaming",
+      description: "Professional gaming mouse with lightweight design and precise tracking.",
+      recommended: true,
+      icon: "touch_app"
+    },
+    {
+      id: 33,
+      name: "SteelSeries Rival 650",
+      category: "Mouse",
+      price: 4500,
+      specs: "Wireless, 18000 DPI",
+      performance: "92/100",
+      powerUsage: "2W",
+      useCase: "Gaming, Productivity",
+      description: "Reliable gaming mouse with excellent comfort and build quality.",
+      icon: "touch_app"
+    },
+    {
+      id: 34,
+      name: "Corsair K95 Platinum XT",
+      category: "Keyboard",
+      price: 22000,
+      specs: "Mechanical, Cherry MX, RGB",
+      performance: "96/100",
+      powerUsage: "5W",
+      useCase: "Gaming, Streaming",
+      description: "Premium mechanical keyboard with aluminum frame and programmable keys.",
+      recommended: true,
+      icon: "keyboard"
+    },
+    {
+      id: 35,
+      name: "Logitech G Pro X",
+      category: "Keyboard",
+      price: 16000,
+      specs: "Mechanical, GX Switches, Compact",
+      performance: "93/100",
+      powerUsage: "4W",
+      useCase: "Competitive Gaming",
+      description: "Professional-grade compact mechanical keyboard for esports.",
+      icon: "keyboard"
+    },
+    {
+      id: 36,
+      name: "HyperX Cloud II",
+      category: "Headset",
+      price: 8500,
+      specs: "Surround Sound, Noise Cancel",
+      performance: "91/100",
+      powerUsage: "5W",
+      useCase: "Gaming, Streaming",
+      description: "High-quality gaming headset with excellent audio and comfort.",
+      recommended: true,
+      icon: "headphones"
+    },
+    {
+      id: 37,
+      name: "Steelseries Arctis Pro",
+      category: "Headset",
+      price: 14500,
+      specs: "Wireless, Lossless Audio",
+      performance: "94/100",
+      powerUsage: "6W",
+      useCase: "Premium Gaming",
+      description: "Premium wireless gaming headset with pristine audio quality.",
+      icon: "headphones"
     }
   ];
+
+  // Filter and sort recommendations based on search and sort preference
+  const filteredRecommendations = aiRecommendations
+    .filter(item => 
+      searchQuery === "" || 
+      item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      if (sortBy === "performance") return parseFloat(b.performance) - parseFloat(a.performance);
+      return 0;
+    });
+
+  // Get unique categories for suggestions
+  const categories = [...new Set(aiRecommendations.map(item => item.category))].sort();
 
   const openModal = (card) => {
     setSelectedCard(card);
@@ -324,35 +529,98 @@ export default function Configurator() {
           <span className="material-symbols-outlined text-lg">smart_toy</span>
           <span className="text-xs font-bold uppercase tracking-wide">AI Recommendation Engine</span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">22+ AI-Recommended Components</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">37+ AI-Recommended Components</h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-          Select and compare optimized components. Click any card to see detailed specs. Save your favorites to Settings!
+          Search for the parts you need (GPU, CPU, RAM, SSD, Monitor, Keyboard, etc.) - sorted by price from lowest to highest
         </p>
       </div>
 
+      {/* Search and Filter Section */}
+      <div className="glass-panel rounded-2xl p-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Search Input */}
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 material-symbols-outlined">search</span>
+            <input
+              type="text"
+              placeholder="Search by part name or category (GPU, CPU, RAM, SSD, Monitor, Keyboard...)"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-slate-900/50 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30"
+            />
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 material-symbols-outlined">sort</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full bg-slate-900/50 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 cursor-pointer"
+            >
+              <option value="price-low">Price: Low to High ⬆️</option>
+              <option value="price-high">Price: High to Low ⬇️</option>
+              <option value="performance">Performance: Best First ⭐</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Category Quick Filters */}
+        <div className="mt-4">
+          <p className="text-xs text-slate-400 mb-2 uppercase font-bold">Quick Categories:</p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSearchQuery("")}
+              className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
+                searchQuery === "" ? "bg-primary text-white" : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+              }`}
+            >
+              All Parts
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSearchQuery(category)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
+                  searchQuery.toLowerCase() === category.toLowerCase() ? "bg-primary text-white" : "bg-slate-800/50 text-slate-300 hover:bg-slate-700/50"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results Count */}
+        <div className="mt-4 text-sm text-slate-400">
+          Showing <span className="text-primary font-bold">{filteredRecommendations.length}</span> out of <span className="text-primary font-bold">{aiRecommendations.length}</span> components
+        </div>
+      </div>
+
       {/* AI Recommendations Grid - 4-5 per row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
-        {aiRecommendations.map((card) => (
-          <div
-            key={card.id}
-            onClick={() => openModal(card)}
-            className={`glass-card rounded-lg p-3 cursor-pointer transform transition hover:scale-105 ${
-              card.recommended ? "ring-2 ring-primary/50" : ""
-            } group overflow-hidden`}
-          >
-            <div className="h-full flex flex-col bg-slate-900/40 rounded-lg p-4 border border-white/5 hover:border-primary/30">
-              {card.recommended && (
-                <div className="absolute top-1 right-1 bg-primary text-white text-[8px] px-2 py-0.5 rounded">
-                  AI ⭐
+      {filteredRecommendations.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+          {filteredRecommendations.map((card) => (
+            <div
+              key={card.id}
+              onClick={() => openModal(card)}
+              className={`glass-card rounded-lg p-3 cursor-pointer transform transition hover:scale-105 ${
+                card.recommended ? "ring-2 ring-primary/50" : ""
+              } group overflow-hidden`}
+            >
+              <div className="h-full flex flex-col bg-slate-900/40 rounded-lg p-4 border border-white/5 hover:border-primary/30">
+                {card.recommended && (
+                  <div className="absolute top-1 right-1 bg-primary text-white text-[8px] px-2 py-0.5 rounded">
+                    AI ⭐
+                  </div>
+                )}
+
+                {/* Icon */}
+                <div className="flex justify-center mb-2">
+                  <span className="material-symbols-outlined text-4xl text-slate-500">{card.icon}</span>
                 </div>
-              )}
 
-              {/* Icon */}
-              <div className="flex justify-center mb-2">
-                <span className="material-symbols-outlined text-4xl text-slate-500">{card.icon}</span>
-              </div>
-
-              {/* Name */}
+                {/* Name */}
               <h3 className="text-xs font-bold text-white text-center truncate">{card.name}</h3>
 
               {/* Category */}
@@ -374,7 +642,23 @@ export default function Configurator() {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <span className="material-symbols-outlined text-6xl text-slate-600 block mb-4">search_off</span>
+          <p className="text-xl text-slate-400 mb-2">No components found</p>
+          <p className="text-slate-500 mb-4">Try adjusting your search or browse all categories</p>
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setSortBy("price-low");
+            }}
+            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition"
+          >
+            Reset Filters
+          </button>
+        </div>
+      )}
 
       {/* Modal - Detailed View */}
       {selectedCard && (

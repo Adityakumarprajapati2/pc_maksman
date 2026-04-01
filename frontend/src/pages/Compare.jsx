@@ -274,12 +274,56 @@ export default function Compare() {
         )}
       </div>
 
-      {/* Comparison Table */}
+      {/* Detailed Component Configuration for Selected Build */}
       <div className="glass-panel rounded-2xl overflow-hidden mt-8">
         <div className="px-6 py-4 border-b border-white/10 bg-white/5 flex justify-between items-center">
-          <h3 className="text-lg font-bold text-white">Component Configuration</h3>
+          <h3 className="text-lg font-bold text-white">Selected Build - Component Details</h3>
           <span className="text-xs text-slate-400">
-            Comparing <strong className="text-white">{selectedBuildData?.name}</strong> vs others
+            In-depth specs for <strong className="text-white">{selectedBuildData?.name}</strong>
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-slate-400">
+            <thead className="bg-white/5 text-xs uppercase text-slate-300">
+              <tr>
+                <th className="px-6 py-4">Component Type</th>
+                <th className="px-6 py-4 text-primary">Component Name</th>
+                <th className="px-6 py-4">Specifications</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {selectedBuildData?.components.map((component, idx) => (
+                <tr key={idx} className="hover:bg-white/5">
+                  <td className="px-6 py-4 font-bold text-white">{component.type}</td>
+                  <td className="px-6 py-4 text-primary font-semibold">{component.name}</td>
+                  <td className="px-6 py-4 text-slate-300">{component.specs}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot className="border-t border-white/10 bg-white/5">
+              <tr>
+                <td colSpan="3" className="px-6 py-6">
+                  <button
+                    onClick={handleFinalizeBuild}
+                    className="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-blue-600 transition"
+                  >
+                    Finalize {selectedBuildData?.name} Build
+                    <span className="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      {/* Compare All Builds Table */}
+      <div className="glass-panel rounded-2xl overflow-hidden mt-8">
+        <div className="px-6 py-4 border-b border-white/10 bg-white/5 flex justify-between items-center">
+          <h3 className="text-lg font-bold text-white">Compare All Profiles</h3>
+          <span className="text-xs text-slate-400">
+            Side-by-side comparison of all {filteredBuilds.length} available builds
           </span>
         </div>
 
@@ -288,7 +332,7 @@ export default function Compare() {
             <thead className="bg-white/5 text-xs uppercase text-slate-300">
               <tr>
                 <th className="px-6 py-4">Component</th>
-                {builds.map((build, idx) => (
+                {filteredBuilds.map((build, idx) => (
                   <th
                     key={idx}
                     className={`px-6 py-4 ${
@@ -306,7 +350,7 @@ export default function Compare() {
               {["CPU", "GPU", "RAM", "SSD"].map((componentType, idx) => (
                 <tr key={idx} className="hover:bg-white/5">
                   <td className="px-6 py-4 font-medium text-white">{componentType}</td>
-                  {builds.map((build, buildIdx) => {
+                  {filteredBuilds.map((build, buildIdx) => {
                     const component = build.components.find(c => c.type === componentType);
                     const isSelected = build.name.toLowerCase() === selectedProfile;
 
@@ -330,19 +374,19 @@ export default function Compare() {
             <tfoot className="border-t border-white/10 bg-white/5">
               <tr>
                 <td className="px-6 py-6"></td>
-                {builds.map((build, idx) => (
+                {filteredBuilds.map((build, idx) => (
                   <td key={idx} className="px-6 py-6">
                     {build.name.toLowerCase() === selectedProfile ? (
                       <button
                         onClick={handleFinalizeBuild}
                         className="w-full bg-primary text-white py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:bg-blue-600 transition-colors"
                       >
-                        Finalize This Build <span className="material-symbols-outlined">arrow_forward</span>
+                        Selected <span className="material-symbols-outlined">check</span>
                       </button>
                     ) : (
                       <button
                         onClick={() => handleSelectProfile(build.name)}
-                        className="text-xs text-slate-400 hover:text-white underline transition-colors"
+                        className="w-full py-3 rounded-lg border border-white/10 text-slate-300 text-sm font-medium hover:bg-white/5 transition-colors"
                       >
                         Switch to {build.name}
                       </button>

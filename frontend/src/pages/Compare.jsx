@@ -6,51 +6,151 @@ export default function Compare() {
   const { useCaseBuilds, setCurrentBuild } = useAppContext();
   const [selectedProfile, setSelectedProfile] = useState("balanced");
   const [builds, setBuilds] = useState([]);
-  const [maxPrice, setMaxPrice] = useState(200000);
+  const [maxPrice, setMaxPrice] = useState(500000);
   const [filteredBuilds, setFilteredBuilds] = useState([]);
 
   // Mock builds if no real data is available
   useEffect(() => {
     if (useCaseBuilds && useCaseBuilds.length > 0) {
       setBuilds(useCaseBuilds);
-      setSelectedProfile(useCaseBuilds[0]?.name?.toLowerCase() || "budget");
+      setSelectedProfile(useCaseBuilds[0]?.name?.toLowerCase() || "entry");
     } else {
-      // Default mock builds
+      // Comprehensive build recommendations from entry to extreme
       setBuilds([
         {
-          name: "Budget",
-          description: "Best for web browsing, Office apps, and streaming content.",
-          totalPrice: 54000,
+          name: "Entry Level",
+          description: "Perfect for browsing, documents, and light tasks.",
+          totalPrice: 25000,
           components: [
-            { type: "CPU", name: "i3-12100F", specs: "4 cores" },
-            { type: "GPU", name: "RX 6600", specs: "8GB VRAM" },
+            { type: "CPU", name: "Ryzen 3 4100", specs: "4 cores / 4 threads" },
+            { type: "GPU", name: "Vega 11 (iGPU)", specs: "Integrated graphics" },
+            { type: "RAM", name: "8GB DDR4", specs: "2400MHz" },
+            { type: "SSD", name: "256GB SSD", specs: "Read 500MB/s" }
+          ]
+        },
+        {
+          name: "Office Work",
+          description: "Excellent for office work, spreadsheets, and video calls.",
+          totalPrice: 40000,
+          components: [
+            { type: "CPU", name: "i3-12100", specs: "4 cores / 8 threads" },
+            { type: "GPU", name: "UHD 730 (iGPU)", specs: "Integrated graphics" },
             { type: "RAM", name: "16GB DDR4", specs: "3200MHz" },
-            { type: "SSD", name: "512GB NVMe", specs: "Read 3400MB/s" }
+            { type: "SSD", name: "512GB NVMe", specs: "Read 3500MB/s" }
           ]
         },
         {
-          name: "Balanced",
-          description: "Excellent multitasker for editing, gaming, and research.",
-          totalPrice: 100000,
+          name: "Content Creator",
+          description: "Great for photo editing, light video work, and streaming.",
+          totalPrice: 65000,
           components: [
-            { type: "CPU", name: "i5-13600K", specs: "14 cores" },
-            { type: "GPU", name: "RTX 3060 Ti", specs: "8GB VRAM" },
-            { type: "RAM", name: "32GB DDR5", specs: "6000MHz" },
-            { type: "SSD", name: "1TB NVMe", specs: "Read 7000MB/s" }
+            { type: "CPU", name: "Ryzen 5 5600X", specs: "6 cores / 12 threads" },
+            { type: "GPU", name: "RX 6600 XT", specs: "12GB VRAM" },
+            { type: "RAM", name: "32GB DDR4", specs: "3600MHz" },
+            { type: "SSD", name: "512GB NVMe", specs: "Read 4500MB/s" }
           ]
         },
         {
-          name: "High-End",
-          description: "Uncompromised speed for 3D rendering and 4K workflows.",
+          name: "Gaming Budget",
+          description: "Solid 1080p gaming at high settings with smooth performance.",
+          totalPrice: 85000,
+          components: [
+            { type: "CPU", name: "i5-12400F", specs: "6 cores / 12 threads" },
+            { type: "GPU", name: "RTX 3060", specs: "12GB VRAM" },
+            { type: "RAM", name: "16GB DDR5", specs: "5200MHz" },
+            { type: "SSD", name: "1TB NVMe", specs: "Read 5500MB/s" }
+          ]
+        },
+        {
+          name: "Balanced Pro",
+          description: "Perfect blend of gaming, streaming, and creative work.",
+          totalPrice: 120000,
+          components: [
+            { type: "CPU", name: "i7-13700K", specs: "16 cores / 24 threads" },
+            { type: "GPU", name: "RTX 3070 Ti", specs: "8GB VRAM" },
+            { type: "RAM", name: "32GB DDR5", specs: "6000MHz" },
+            { type: "SSD", name: "1TB NVMe", specs: "Read 6500MB/s" }
+          ]
+        },
+        {
+          name: "4K Creator",
+          description: "Professional 4K video editing and rendering powerhouse.",
+          totalPrice: 160000,
+          components: [
+            { type: "CPU", name: "Ryzen 9 7900X", specs: "12 cores / 24 threads" },
+            { type: "GPU", name: "RTX 4070 Ti", specs: "12GB VRAM" },
+            { type: "RAM", name: "64GB DDR5", specs: "6000MHz" },
+            { type: "SSD", name: "2TB NVMe", specs: "Read 7000MB/s" }
+          ]
+        },
+        {
+          name: "Extreme Gaming",
+          description: "Maximum FPS at 1440p ultra settings, built for esports.",
           totalPrice: 175000,
           components: [
-            { type: "CPU", name: "i9-13900K", specs: "24 cores" },
+            { type: "CPU", name: "i9-13900K", specs: "24 cores / 32 threads" },
             { type: "GPU", name: "RTX 4080", specs: "16GB VRAM" },
-            { type: "RAM", name: "64GB DDR5", specs: "6000MHz" },
-            { type: "SSD", name: "2TB NVMe", specs: "Read 7400MB/s" }
+            { type: "RAM", name: "32GB DDR5", specs: "6400MHz" },
+            { type: "SSD", name: "2TB NVMe", specs: "Read 7500MB/s" }
+          ]
+        },
+        {
+          name: "AI/ML Research",
+          description: "Purpose-built for machine learning and AI development.",
+          totalPrice: 220000,
+          components: [
+            { type: "CPU", name: "Ryzen Threadripper Pro", specs: "16 cores / 32 threads" },
+            { type: "GPU", name: "RTX 6000 Ada", specs: "48GB VRAM" },
+            { type: "RAM", name: "128GB DDR5", specs: "6000MHz" },
+            { type: "SSD", name: "4TB NVMe", specs: "Read 8000MB/s" }
+          ]
+        },
+        {
+          name: "Ultra 4K Gaming",
+          description: "Native 4K gaming at ultra settings with ray tracing.",
+          totalPrice: 250000,
+          components: [
+            { type: "CPU", name: "i9-14900KS", specs: "24 cores / 32 threads" },
+            { type: "GPU", name: "RTX 4090", specs: "24GB VRAM" },
+            { type: "RAM", name: "64GB DDR5", specs: "6400MHz" },
+            { type: "SSD", name: "4TB NVMe RAID", specs: "Read 14GB/s" }
+          ]
+        },
+        {
+          name: "Motion Graphics",
+          description: "Optimized for 3D modeling, animation, and visual effects.",
+          totalPrice: 280000,
+          components: [
+            { type: "CPU", name: "Threadripper PRO 5995WX", specs: "64 cores / 128 threads" },
+            { type: "GPU", name: "RTX 6000 Ada Dual", specs: "48GB VRAM x2" },
+            { type: "RAM", name: "512GB DDR4", specs: "3200MHz" },
+            { type: "SSD", name: "8TB NVMe RAID", specs: "Read 20GB/s" }
+          ]
+        },
+        {
+          name: "Workstation Elite",
+          description: "Dual GPU setup for professional rendering and compute.",
+          totalPrice: 350000,
+          components: [
+            { type: "CPU", name: "Xeon Platinum 8490H", specs: "60 cores / 120 threads" },
+            { type: "GPU", name: "RTX 6000 Ada x2", specs: "96GB VRAM total" },
+            { type: "RAM", name: "768GB DDR5", specs: "4800MHz" },
+            { type: "SSD", name: "16TB NVMe RAID", specs: "Read 30GB/s" }
+          ]
+        },
+        {
+          name: "Ultimate Beast",
+          description: "No compromise - fastest everything for unlimited performance.",
+          totalPrice: 500000,
+          components: [
+            { type: "CPU", name: "Xeon Platinum 8592+", specs: "60 cores / 120 threads" },
+            { type: "GPU", name: "RTX 6000 Ada x4", specs: "192GB VRAM total" },
+            { type: "RAM", name: "1536GB DDR5", specs: "6000MHz" },
+            { type: "SSD", name: "32TB NVMe RAID", specs: "Read 50GB/s" }
           ]
         }
       ]);
+      setSelectedProfile("balanced");
     }
   }, [useCaseBuilds]);
 
@@ -112,8 +212,8 @@ export default function Compare() {
           <input
             type="range"
             min="20000"
-            max="250000"
-            step="5000"
+            max="500000"
+            step="10000"
             value={maxPrice}
             onChange={(e) => setMaxPrice(Number(e.target.value))}
             className="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
@@ -121,13 +221,13 @@ export default function Compare() {
 
           {/* Price Range Labels */}
           <div className="flex justify-between text-xs text-slate-400">
-            <span>₹20,000</span>
-            <span>₹135,000</span>
-            <span>₹250,000</span>
+            <span>₹20K</span>
+            <span>₹260K</span>
+            <span>₹500K</span>
           </div>
 
           {/* Quick Price Presets */}
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-5 gap-2">
             <button
               onClick={() => setMaxPrice(50000)}
               className={`py-2 rounded-lg text-xs font-medium transition ${
@@ -168,13 +268,23 @@ export default function Compare() {
             >
               ₹2.5L
             </button>
+            <button
+              onClick={() => setMaxPrice(500000)}
+              className={`py-2 rounded-lg text-xs font-medium transition ${
+                maxPrice === 500000
+                  ? "bg-primary text-white"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10"
+              }`}
+            >
+              ₹5L
+            </button>
           </div>
 
           {/* Available Builds Info */}
           <div className="text-center pt-2 border-t border-white/10">
             <p className="text-xs text-slate-400">
               Showing <span className="font-bold text-white">{filteredBuilds.length}</span> of{" "}
-              <span className="font-bold text-white">{builds.length}</span> builds
+              <span className="font-bold text-white">{builds.length}</span> AI-recommended builds
             </p>
           </div>
         </div>

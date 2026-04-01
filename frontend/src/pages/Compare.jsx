@@ -6,6 +6,8 @@ export default function Compare() {
   const { useCaseBuilds, setCurrentBuild } = useAppContext();
   const [selectedProfile, setSelectedProfile] = useState("balanced");
   const [builds, setBuilds] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(200000);
+  const [filteredBuilds, setFilteredBuilds] = useState([]);
 
   // Mock builds if no real data is available
   useEffect(() => {
@@ -52,6 +54,12 @@ export default function Compare() {
     }
   }, [useCaseBuilds]);
 
+  // Filter builds by max price
+  useEffect(() => {
+    const filtered = builds.filter(b => b.totalPrice <= maxPrice);
+    setFilteredBuilds(filtered);
+  }, [builds, maxPrice]);
+
   const handleSelectProfile = (profileName) => {
     setSelectedProfile(profileName.toLowerCase());
   };
@@ -74,9 +82,93 @@ export default function Compare() {
 
   return (
     <div className="space-y-8">
+      {/* Price Filter Bar */}
+      <div className="glass-panel rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold text-white">Budget Filter</h3>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-primary">₹{maxPrice.toLocaleString("en-IN")}</div>
+            <div className="text-xs text-slate-400">Maximum budget</div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {/* Price Slider */}
+          <input
+            type="range"
+            min="20000"
+            max="250000"
+            step="5000"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="w-full h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary"
+          />
+
+          {/* Price Range Labels */}
+          <div className="flex justify-between text-xs text-slate-400">
+            <span>₹20,000</span>
+            <span>₹135,000</span>
+            <span>₹250,000</span>
+          </div>
+
+          {/* Quick Price Presets */}
+          <div className="grid grid-cols-4 gap-2">
+            <button
+              onClick={() => setMaxPrice(50000)}
+              className={`py-2 rounded-lg text-xs font-medium transition ${
+                maxPrice === 50000
+                  ? "bg-primary text-white"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10"
+              }`}
+            >
+              ₹50K
+            </button>
+            <button
+              onClick={() => setMaxPrice(100000)}
+              className={`py-2 rounded-lg text-xs font-medium transition ${
+                maxPrice === 100000
+                  ? "bg-primary text-white"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10"
+              }`}
+            >
+              ₹1L
+            </button>
+            <button
+              onClick={() => setMaxPrice(150000)}
+              className={`py-2 rounded-lg text-xs font-medium transition ${
+                maxPrice === 150000
+                  ? "bg-primary text-white"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10"
+              }`}
+            >
+              ₹1.5L
+            </button>
+            <button
+              onClick={() => setMaxPrice(250000)}
+              className={`py-2 rounded-lg text-xs font-medium transition ${
+                maxPrice === 250000
+                  ? "bg-primary text-white"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10"
+              }`}
+            >
+              ₹2.5L
+            </button>
+          </div>
+
+          {/* Available Builds Info */}
+          <div className="text-center pt-2 border-t border-white/10">
+            <p className="text-xs text-slate-400">
+              Showing <span className="font-bold text-white">{filteredBuilds.length}</span> of{" "}
+              <span className="font-bold text-white">{builds.length}</span> builds
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Profile Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-        {builds.map((build, idx) => {
+        {filteredBuilds.length > 0 ? (
+          filteredBuilds.map((build, idx) => {
           const isSelected = build.name.toLowerCase() === selectedProfile;
           const icons = ["desktop_windows", "computer", "precision_manufacturing"];
 
@@ -151,7 +243,20 @@ export default function Compare() {
               </div>
             </div>
           );
-        })}
+        })
+        ) : (
+          <div className="col-span-full text-center py-12">
+            <span className="material-symbols-outlined text-6xl text-slate-400 block mb-4">filter_alt</span>
+            <h3 className="text-xl font-bold text-slate-300 mb-2">No Builds Available</h3>
+            <p className="text-slate-400 mb-4">No builds match your budget filter.</p>
+            <button
+              onClick={() => setMaxPrice(250000)}
+              className="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-blue-600 transition"
+            >
+              Reset Filter
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Comparison Table */}
@@ -255,13 +360,6 @@ export default function Compare() {
             <div className="text-xs text-slate-400 mb-1">Performance</div>
             <div className="text-lg font-bold text-green-400">Optimal</div>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-            </tfoot>
-          </table>
         </div>
       </div>
     </div>
